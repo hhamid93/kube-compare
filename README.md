@@ -244,7 +244,7 @@ achieve this meaningful diff the tool must do perform two operations:
 
 To Compare a known valid reference configuration with a live cluster:
 
-`kubectl cluster-compare -r <referenceConfigurationDirecotry>'
+`kubectl cluster-compare -r <referenceConfigurationDirecotry>`
 
 To Compare a known valid reference configuration with a local set of CRs:
 
@@ -252,11 +252,11 @@ To Compare a known valid reference configuration with a local set of CRs:
 
 To Compare a known valid reference configuration with a live cluster and with a user config:
 
-`kubectl cluster-compare -r <referenceConfigurationDirecotry> -c <userConfig>'
+`kubectl cluster-compare -r <referenceConfigurationDirecotry> -c <userConfig>`
 
 To Run a known valid reference configuration with a must-gather output:
 
-`kubectl cluster-compare -r <referenceConfigurationDirecotry> -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R'
+`kubectl cluster-compare -r <referenceConfigurationDirecotry> -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R`
 
 #### Reference Configuration Directory
 
