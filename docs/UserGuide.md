@@ -80,8 +80,79 @@ hardware, os configuratoin, etc (unless available through the api) out of scope.
 
 # Example use cases
 
+To Compare a known valid reference configuration with a live cluster:
+
+`kubectl cluster-compare -r <referenceConfigurationDirecotry>`
+
+To Compare a known valid reference configuration with a local set of CRs:
+
+`kubectl cluster-compare -r <referenceConfigurationDirecotry> -f <inputConfiguration>`
+
+To Compare a known valid reference configuration with a live cluster and with a user config:
+
+`kubectl cluster-compare -r <referenceConfigurationDirecotry> -c <userConfig>`
+
+To Run a known valid reference configuration with a must-gather output:
+
+`kubectl cluster-compare -r <referenceConfigurationDirecotry> -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R`
+
 # Understanding the output
 
 # Options and advanced usage
 
+## Kubectl Environment Variables
+The tool is responsive to KUBECTL_EXTERNAL_DIFF environment variable (same as oc diff). This allows you to tailor the output formatting to suit your preference. 
+
+side-by-side comparison (total width 150 characters) with:
+`KUBECTL_EXTERNAL_DIFF="diff -y -W 150"`
+
 # Troubleshooting
+
+## False Positives
+
+### Reference Designs CRs may change (or not) from one cluster version to another version
+The tool sometimes reports CR to be missing completely while in the live cluster environment the CR is present. This can happen at times because the tool is not correctly identifying the operator versions of these CRs or template's critical fields don't match cluster CRs.
+
+#### Example #1:
+```
+Missing required CRs: 
+DU-Reference:
+  Tuning:
+  - ConsoleOperatorDisable.yaml
+  - DisableSnoNetworkDiag.yaml
+
+[cluster]$ kubectl get network -A
+NAME      AGE
+cluster   5d20h
+[cluster]$ kubectl get console -A
+NAME      AGE
+cluster   5d20h
+```
+#### Example #2:
+```
+Cluster CR
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: $name
+  namespace: openshift-sriov-network-operator
+  
+Template CR
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: sriov
+  namespace: openshift-sriov-network-operator
+```
+
+In such scenarios take these steps:
+1. Ensure the lastest version of tool is updated with the most recent version of CR.
+2. Ensure that template has the same api-version-kind-name-namespace as the cluster CR.
+
+### There can be more than one Reference Design CR of the same Kind
+
+In this case you will have a warning presented before the diff output, formatted similar to this:
+`W0402 15:19:36.531169 3578413 corelator.go:144] More then one template with same apiVersion, metadata_name, metadata_namespace, kind. These templates wont be used for corelation. To use them use different corelator (manual matching) or remove one of them from the reference. Template names are: XConfig.yaml, YConfig.yaml`
+
+This means the template contains two CRs with the same apiversion-kind-name-namespace but different spec. In such cases comment out the template CRs from the metadata.yaml that are more accurate with CRs under comparison.
+
