@@ -103,6 +103,12 @@ To Run a known valid reference configuration with a must-gather output:
 ## Kubectl Environment Variables
 The tool is responsive to KUBECTL_EXTERNAL_DIFF environment variable (same as oc diff). This allows you to tailor the output formatting to suit your preference. 
 
+-y : side by side comparison
+--color: colored output
+-W <char_width>: width of char_length
+
+For more available options do diff --help
+
 side-by-side comparison (total width 150 characters) with:
 `KUBECTL_EXTERNAL_DIFF="diff -y -W 150"`
 
@@ -116,33 +122,33 @@ The tool sometimes reports CR to be missing completely while in the live cluster
 #### Example #1:
 ```
 Missing required CRs: 
-DU-Reference:
-  Tuning:
-  - ConsoleOperatorDisable.yaml
-  - DisableSnoNetworkDiag.yaml
+Template-Reference:
+  ExamplePart:
+  - Example-Component-CR.yaml
+  - Example-Component-CR.yaml
 
-[cluster]$ kubectl get network -A
-NAME      AGE
-cluster   5d20h
+[cluster]$ kubectl get example-component -A
+NAME                      AGE
+example-component-name   5d20h
 [cluster]$ kubectl get console -A
-NAME      AGE
-cluster   5d20h
+NAME                      AGE
+example-component-name   5d20h
 ```
 #### Example #2:
 ```
 Cluster CR
-apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetworkNodePolicy
+apiVersion: ExampleVersion
+kind: ExampleKind
 metadata:
-  name: $name
-  namespace: openshift-sriov-network-operator
+  name: $x-name
+  namespace: ExampleNamespace
   
 Template CR
-apiVersion: sriovnetwork.openshift.io/v1
-kind: SriovNetworkNodePolicy
+apiVersion: ExampleVersion
+kind: ExampleKind
 metadata:
-  name: sriov
-  namespace: openshift-sriov-network-operator
+  name: $y-name
+  namespace: ExampleNamespace
 ```
 
 In such scenarios take these steps:
