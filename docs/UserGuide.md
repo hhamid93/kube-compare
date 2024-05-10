@@ -152,7 +152,8 @@ metadata:
 ```
 
 In such scenarios take these steps:
-1. Ensure the lastest version of tool is updated with the most recent version of CR.
+1. Ensure you are using the lastest version of tool
+1. Ensure you are using the most up-to-date version of the reference configuration.
 2. Ensure that template has the same api-version-kind-name-namespace as the cluster CR.
 
 ### There can be more than one Reference Design CR of the same Kind
