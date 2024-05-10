@@ -254,7 +254,7 @@ To Compare a known valid reference configuration with a live cluster and with a 
 
 `kubectl cluster-compare -r <referenceConfigurationDirecotry> -c <userConfig>`
 
-To Run a known valid reference configuration with a must-gather output:
+To Run a known valid reference configuration against a support archive:
 
 `kubectl cluster-compare -r <referenceConfigurationDirecotry> -f "must-gather*/*/cluster-scoped-resources","must-gather*/*/namespaces" -R`
 
