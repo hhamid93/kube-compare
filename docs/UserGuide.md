@@ -101,7 +101,7 @@ To Run a known valid reference configuration with a must-gather output:
 # Options and advanced usage
 
 ## Kubectl Environment Variables
-The tool is responsive to KUBECTL_EXTERNAL_DIFF environment variable (same as oc diff). This allows you to tailor the output formatting to suit your preference. 
+The tool is responsive to KUBECTL_EXTERNAL_DIFF environment variable (same as kubectl diff). This allows you to tailor the output formatting to suit your preference. 
 
 -y : side by side comparison
 --color: colored output
